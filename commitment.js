@@ -1,0 +1,3 @@
+class Commitment extends Entity(){
+
+}
