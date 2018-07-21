@@ -1,18 +1,23 @@
 var CentralModul = CentralModul || {};
 
 
-CentralModul =(function(domElements, moduls, listeners){
+CentralModul =(function(domElements, templates, moduls, listeners){
 	"use strict";
 	centralModul = new EventListener();
 
 	function init(){
 		getDOMElements();
+		setTemplates();
 		initModuls();
 		addListeners();
-	}
+	}	
 
 	function getDOMElements(){
 
+	}
+
+	function setTemplates(){
+		
 	}
 
 	function initModuls(){
