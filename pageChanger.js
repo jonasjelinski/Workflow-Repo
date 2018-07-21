@@ -4,6 +4,7 @@ var PageChanger = PageChanger || {};
 PageChanger = (function(){
 	"use strict";
 	let pageChanger = {},
+		pageParentElement,
 		currentPage;
 
 	const PAGES = {

@@ -1,7 +1,7 @@
 var CentralModul = CentralModul || {};
 
 
-CentralModul =(function(domElements, templates, moduls, listeners){
+CentralModul =(function(domElements, moduls, listeners){
 	"use strict";
 	centralModul = new EventListener();
 
@@ -17,7 +17,7 @@ CentralModul =(function(domElements, templates, moduls, listeners){
 	}
 
 	function setTemplates(){
-		
+
 	}
 
 	function initModuls(){
@@ -77,6 +77,16 @@ CentralModul =(function(domElements, templates, moduls, listeners){
 
 	}
 
+	function drawThisPage(){
+
+	}
+
+	function delteThisPage(){
+
+	}
+
 	centralModul.init = init;
+	centralModul.drawThisPage = drawThisPage;
+	centralModul.delteThisPage = delteThisPage;
 	return centralModul;
 }());
