@@ -7,7 +7,6 @@ CentralModul =(function(domElements, moduls, listeners){
 
 	function init(){
 		getDOMElements();
-		setTemplates();
 		initModuls();
 		addListeners();
 	}	
