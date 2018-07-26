@@ -6,74 +6,58 @@ HorseApp.ListView= class ListView extends EventTarget{
 		super();
 		this.unsortedList = domElement;
 		this.newEntryTemplate = newEntryTemplate;
-	    this.target.addEventListener("dragstart", this.handleDragStart.bind(this), false);
-	    this.target.addEventListener("dragover", this.handleDragOver.bind(this), false);
-	    this.target.addEventListener("drop", this.handleDrop.bind(this), false);
-	    this.target.addEventListener("onClick", this.handleClick(this), false);
-		this.hoverClass = hoverClass;
-		this.dropEvent = "onDrop";
-		this.clickEvent = "onClick";
-		this.targetId = targetId;
 	}
 
-	handleDragStart(event) {
-        dragElement = this;
-        event.dataTransfer.effectAllowed = "move";
-        event.dataTransfer.setData("text/html", this.outerHTML);
+    addNewElement(domListElement, id){
+    	let listElement = new listElement(domListElement, id);
+    	addListeners(listElement);
+		this.unsortedList.appendChild(domListElement):
 	}
 
-	handleDragOver(event) {
-        if (event.preventDefault) {
-            event.preventDefault();
-        }
-        event.dataTransfer.dropEffect = "move";
-        return false;
-	}
-
-  	handleDrop(event) {
-      if (event.stopPropagation) {
-          event.stopPropagation(); 
-      }
-      if (dragElement !== this) {
-        insertDroppedElement(this, event);
-        dispatchDropEvent();
-
-      }
-      return false;
-	}
-
-	insertDroppedElement(that, event){
-      let data,
-          dropElemement;
-      that.parentNode.removeChild(dragElement);
-      data = event.dataTransfer.getData("text/html");
-      that.insertAdjacentHTML("beforebegin",data);
-      dropElemement = that.previousSibling;
-      addListeners(dropElemement);    
+	addListeners(listElement){  
+        listElement.addEventListener(listElement.dropEvent, handleElementDrop, false);    
     }
 
-     addListeners(div){
-        div.addEventListener("dragstart", handleDragStart, false);        
-        div.addEventListener("dragover", handleDragOver, false);
-        div.addEventListener("drop", handleDrop, false);    
+
+    handleElementDrop(event){
+    	let details = event.details,    		
+    		droppedElement = event.details.droppedElement,    		
+    		element = that.element;
+    		if(!isDroppingOnItsself(this, droppedElement)){
+    			insertDroppedElement(element, droppedElement);
+    		}    		
     }
+
+    isDroppingOnItsself(self, droppedElement){
+    	let selfId = self.elementId,
+    		droppedId = droppedElement.elementId,
+    	if(droppedId === selfId){
+    		return true;
+    	}
+    	return false;
+    }	
+
+    insertDroppedElement(element, droppedElement){           
+      removedroppedElementFromPreviousPosition(droppedElement);
+      insertdroppedElementIntoNewPosition(element, droppedElement);       
+    }
+
+    removedroppedElementFromPreviousPosition(droppedElement){
+    	let li = droppedElement.element;
+    	this.unsortedList.removeChild(li);
+    }
+
+    insertdroppedElementIntoNewPosition(element, droppedElement){
+    	let li = droppedElement.element;
+    	element.insertBefore(li);
+    }    
 
 	dispatchDropEvent(){
       let event = new Event(this.dropEvent);
       that.dispatchEvent(event);
-	}
-
-	addNewElement(listElement){
-		listElement.addEventListener("onClick", handleElementClick);
-		listElement.addEventListener("fileDropped", handleElementDrop);
-		this.unsortedList.appendChild(listElement):
-	}
+	}	
 
 	handleElementClick(event){
-
-	}
-
-	handleElementDrop(event){
 
 	}
 

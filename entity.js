@@ -1,4 +1,4 @@
-class Entity{
+  class Entity{
 	constructor(attributes){
 		this.attributes = attributes;
 	}

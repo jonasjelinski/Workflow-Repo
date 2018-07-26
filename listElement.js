@@ -1,53 +1,57 @@
 var HorseApp = HorseApp || {};
 
-HorseApp.ListElement = class ListElement extends EventTarget{
+HorseApp.ListElement = class ListElement extends Eventelement{
 
-	constructor(target, targetId, validFileTypes, hoverClass){
+	constructor(domElement, elementId){
 		super();
-	    this.target.addEventListener("dragover", this.onDragOver.bind(this), false);
-	    this.target.addEventListener("dragleave", this.onDragLeave.bind(this), false);
-	    this.target.addEventListener("drop", this.onDrop.bind(this), false);
-	    this.target.addEventListener("onClick", this.handleClick(this), false);
-		this.hoverClass = hoverClass;
-		this.dropEvent = "fileDropped";
-		this.clickEvent = "onClick";
-		this.targetId = targetId;
+		this.element = domElement;
+		this.elementId = elementId;
+	   	this.element.addEventListener("dragstart", this.handleDragStart.bind(this), false);
+	    this.element.addEventListener("dragover", this.handleDragOver.bind(this), false);
+	    this.element.addEventListener("drop", this.handleDrop.bind(this), false);
+	    this.element.addEventListener("onClick", this.handleClick(this), false);
+		this.dragEvent = "onDrag";
+		this.dropEvent = "onDrop";
+		this.clickEvent = "onClick";		
+		
 	}
 
-	onDragOver(event){    
-	    this.target.classList.add(this.hoverClass);        
-	    event.preventDefault();    
-	    event.stopPropagation();    
-	    event.dataTransfer.dropEffect = "copy"; 
-	    return false;  
+	handleDragStart(event) { 
+		let data = JSON.stringify(this);
+        event.dataTransfer.effectAllowed = "move";
+        event.dataTransfer.setData("text", data);
 	}
 
-	onDragLeave(){
-    	this.target.classList.remove(this.hoverClass);
-  	}
-
-  	onDrop(event) {
-	    var file = event.dataTransfer.files[0];
-	    this.target.classList.remove(this.hoverClass);   
-	    event.stopPropagation();
-	    event.preventDefault();
-
-	    if (file && this.validFileTypes.includes(file.type)) {   
-	      this.handleFileDrop(file);
-	    }
-	    return false;
+	handleDragOver(event) {
+        if (event.preventDefault) {
+            event.preventDefault();
+        }
+        event.dataTransfer.dropEffect = "move";
+        return false;
 	}
 
-	handleFileDrop(file) {
-	    let event = new Event(this.dropEvent);
-	    event.data = file;
-	    this.dispatchEvent(event);
+  	handleDrop(event) {
+		if( ev.preventDefault){
+			ev.preventDefault();
+		}
+      if (event.stopPropagation) {
+          event.stopPropagation(); 
+      }	
+      	let data = event.dataTransfer.getData("text"),
+      		droppedElement = JSON.parse(data);
+        dispatchIdAndDroppedElement(droppedElement);
+      return false;
+	}
+
+	dispatchDroppedElement(droppedElement){
+		let event = new Event(this.dropEvent);
+		event.details = {};
+		event.details.droppedElement = this.droppedElement;
+		this.dispatchEvent(event);
 	}
 
 	handleClick(){
-		let event = new Event(this.clickEvent);
-		event.data = this.targetId;
-		this.dispatchEvent(event);
+		dispatchId();
 	}
 
 };
